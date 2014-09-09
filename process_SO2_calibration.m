@@ -18,7 +18,7 @@ figure(1); clf;
 bar(yr_geng, SO2_geng, 'facec', [6 125 255]/255, 'edge', 'none');
 set(gca, 'fontsize', 8);
 ylim([0 160]);
-xlim([2003 2030]);
+xlim([2003 2031]);
 set(gca, 'xtick', [2005 2010:5:2030]);
 set(gca, 'tickdir', 'out');
 title('SO2', 'fontsize', 10);
@@ -29,7 +29,7 @@ figure(2); clf;
 bar(yr_geng, NOX_geng, 'facec', [6 125 255]/255, 'edge', 'none');
 set(gca, 'fontsize', 8);
 ylim([0 160]);
-xlim([2003 2030]);
+xlim([2003 2031]);
 set(gca, 'xtick', [2005 2010:5:2030]);
 set(gca, 'tickdir', 'out');
 title('NOX', 'fontsize', 10);
@@ -78,7 +78,7 @@ ylabel('Coal Share');
 
 
 % ==============================
-gdx_filename = 'result_default.gdx';
+gdx_filename = 'result_urban_exo.gdx';
 [urban, urban_id] = getgdx(gdx_filename, 'urban');
 SO2 = squeeze(urban(strcmp('SO2', urban_id{1}),:,:,:));
 SO2_r = squeeze(sum(SO2,2));
@@ -107,6 +107,7 @@ plot(yr, col_consumption_n/1e3, 'r^-', 'markersize', 5);
 figure(4); hold on;
 plot(yr, col_share_n, 'r^-', 'markersize', 5);
 
+
 % ==============================
 gdx_filename = 'result_egyint_n.gdx';
 [urban, urban_id] = getgdx(gdx_filename, 'urban');
@@ -128,18 +129,46 @@ col_share_n = col_consumption_n./egycons_n;
 figure(1); hold on;
 plot(yr, SO2_n, 'go-', 'markersize', 5);
 legend('Emission Inventory (Gung et al.)', 'CREM Baseline (No Policy)', 'CREM w/ exponential deay EF (No Policy)', 'CREM w/ exponential deay EF & Policy', 2)
-% my_gridline; export_fig SO2_compare;
+% my_gridline; export_fig SO2_compare_2;
 
 figure(2); hold on;
 plot(yr, NOX_n, 'go-', 'markersize', 5);
 legend('Emission Inventory (Gung et al.)', 'CREM Baseline (No Policy)', 'CREM w/ exponential decay EF (No Policy)', 'CREM w/ exponential decay EF & Policy', 2)
-% my_gridline; export_fig NOX_compare;
+% my_gridline; export_fig NOX_compare_2;
 
 figure(3); hold on;
 plot(yr, col_consumption_n/1e3, 'go-', 'markersize', 5);
 
 figure(4); hold on;
 plot(yr, col_share_n, 'go-', 'markersize', 5);
+
+%%
+gdx_filename = 'result_egyint_n_85.gdx';
+[urban, urban_id] = getgdx(gdx_filename, 'urban');
+SO2 = squeeze(urban(strcmp('SO2', urban_id{1}),:,:,:));
+SO2_r = squeeze(sum(SO2,2));
+SO2_n = sum(SO2_r);
+NOX = squeeze(urban(strcmp('NOX', urban_id{1}),:,:,:));
+NOX_r = squeeze(sum(NOX,2));
+NOX_n = sum(NOX_r);
+
+[egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
+col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
+col_consumption_n = sum(col_consumption,2);
+[report, report_id] = getgdx(gdx_filename, 'report');
+egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30));
+egycons_n = sum(egycons,2);
+col_share_n = col_consumption_n./egycons_n;
+
+figure(1); hold on;
+plot(yr, SO2_n, 'g^-', 'markersize', 5);
+legend('Emission Inventory (Gung et al.)', 'CREM Baseline (No Policy)', 'CREM w/ exponential deay EF (No Policy)', 'CREM w/ exponential deay EF & Policy', 2)
+% my_gridline; export_fig SO2_compare_2;
+
+figure(2); hold on;
+plot(yr, NOX_n, 'g^-', 'markersize', 5);
+legend('Emission Inventory (Gung et al.)', 'CREM Baseline (No Policy)', 'CREM w/ exponential decay EF (No Policy)', 'CREM w/ exponential decay EF & Policy', 2)
+% my_gridline; export_fig NOX_compare_2;
 
 
 %% SO2 in ELE sector
@@ -244,10 +273,8 @@ tmp = [0.8187
 
 log((tmp-lo_bnd)./lo_bnd)
 
-alpha = [-3.75 %SO2
+alpha = [-3.76 %SO2
          -0.3];%NOx
-% alpha = [-3.76 %SO2
-%          -0.3];%NOx
 lo_bnd = repmat(lo_bnd,1,length(t));
 ef2 = exp(alpha*(t-1)).*(1-lo_bnd)+lo_bnd; % emission factor
 
@@ -255,13 +282,4 @@ hold on;
 plot(yr, ef2, 'x:');
 
 my_gridline;
-
-% =====
-% [curb, curb_id] = getgdx('merge_urban_exo.gdx', 'curb');
-% curb_SO2_BJ_ele_col = curb(:,strcmp('SO2', curb_id{2}), strcmp('BJ', curb_id{3}), strcmp('ELE', curb_id{4}), strcmp('COL', curb_id{5}));
-% curb_SO2_BJ_ele_col(2:end) = curb_SO2_BJ_ele_col(2:end)/curb_SO2_BJ_ele_col(2);
-% 
-% curb_SO2_BJ_agr_col = curb(:,strcmp('SO2', curb_id{2}), strcmp('BJ', curb_id{3}), strcmp('AGR', curb_id{4}), strcmp('COL', curb_id{5}));
-% curb_SO2_BJ_agr_col(2:end) = curb_SO2_BJ_agr_col(2:end)/curb_SO2_BJ_agr_col(2);
-
 
