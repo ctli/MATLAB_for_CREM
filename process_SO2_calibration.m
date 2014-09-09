@@ -129,12 +129,12 @@ col_share_n = col_consumption_n./egycons_n;
 figure(1); hold on;
 plot(yr, SO2_n, 'go-', 'markersize', 5);
 legend('Emission Inventory (Gung et al.)', 'CREM Baseline (No Policy)', 'CREM w/ exponential deay EF (No Policy)', 'CREM w/ exponential deay EF & Policy', 2)
-% my_gridline; export_fig SO2_compare_2;
+% my_gridline; export_fig SO2_compare;
 
 figure(2); hold on;
 plot(yr, NOX_n, 'go-', 'markersize', 5);
 legend('Emission Inventory (Gung et al.)', 'CREM Baseline (No Policy)', 'CREM w/ exponential decay EF (No Policy)', 'CREM w/ exponential decay EF & Policy', 2)
-% my_gridline; export_fig NOX_compare_2;
+% my_gridline; export_fig NOX_compare;
 
 figure(3); hold on;
 plot(yr, col_consumption_n/1e3, 'go-', 'markersize', 5);
@@ -142,36 +142,9 @@ plot(yr, col_consumption_n/1e3, 'go-', 'markersize', 5);
 figure(4); hold on;
 plot(yr, col_share_n, 'go-', 'markersize', 5);
 
-%%
-gdx_filename = 'result_egyint_n_85.gdx';
-[urban, urban_id] = getgdx(gdx_filename, 'urban');
-SO2 = squeeze(urban(strcmp('SO2', urban_id{1}),:,:,:));
-SO2_r = squeeze(sum(SO2,2));
-SO2_n = sum(SO2_r);
-NOX = squeeze(urban(strcmp('NOX', urban_id{1}),:,:,:));
-NOX_r = squeeze(sum(NOX,2));
-NOX_n = sum(NOX_r);
-
-[egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
-col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
-col_consumption_n = sum(col_consumption,2);
-[report, report_id] = getgdx(gdx_filename, 'report');
-egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30));
-egycons_n = sum(egycons,2);
-col_share_n = col_consumption_n./egycons_n;
-
-figure(1); hold on;
-plot(yr, SO2_n, 'g^-', 'markersize', 5);
-legend('Emission Inventory (Gung et al.)', 'CREM Baseline (No Policy)', 'CREM w/ exponential deay EF (No Policy)', 'CREM w/ exponential deay EF & Policy', 2)
-% my_gridline; export_fig SO2_compare_2;
-
-figure(2); hold on;
-plot(yr, NOX_n, 'g^-', 'markersize', 5);
-legend('Emission Inventory (Gung et al.)', 'CREM Baseline (No Policy)', 'CREM w/ exponential decay EF (No Policy)', 'CREM w/ exponential decay EF & Policy', 2)
-% my_gridline; export_fig NOX_compare_2;
-
 
 %% SO2 in ELE sector
+yr = [2007, 2010:5:2030];
 [urban, urban_id] = getgdx('result_default.gdx', 'urban');
 SO2 = squeeze(urban(strcmp('SO2', urban_id{1}),:,:,:));
 SO2_r = squeeze(sum(SO2,2));
@@ -188,6 +161,9 @@ set(gca, 'fontsize', 8);
 ylabel('SO2 (Tg)');
 legend('Other Sectors', 'Electricity', 2);
 set(gcf, 'unit', 'inch', 'pos', [8.8750    5.9167    4.0000    3.0000]);
+
+oth_SO2 = SO2_n-SO2_ele_n;
+oth_growth = oth_SO2(2:end)./oth_SO2(1:end-1)
 
 
 %% Provincial SO2 in 2010
@@ -243,43 +219,4 @@ data_zhao = [
 hold on;
 plot(1:30, data_zhao(:,1), 'b-s', 'markersize', 4, 'markerf', 'b');
 legend('CREM Baseline', 'Zhao et al.');
-
-
-%% Emission factors
-yr = 2010:5:2100;
-
-alpha = [-0.20 %SO2
-         -0.1];%NOx
-
-t = 1:length(yr);
-ef = exp(alpha*(t-1)); % emission factor
-
-figure(10); clf;
-hp = plot(yr, ef, 'x-');
-set(gca, 'fontsize', 8);
-set(gcf, 'units', 'inch', 'pos', [13.1458    5.9167    4.0000    3.0000]);
-xlim([2003 2100]);
-ylim([0 1]);
-ylabel('Emissioni Factor (-)');
-set(gca,'xtick', [2010:20:2100]);
-set(gca,'ytick', 0:0.1:1);
-legend(flipud(hp), 'NOx', 'SO2', 3);
-title('Emission Factors', 'Fontsize', 10)
-
-lo_bnd = [0.85  %SO2
-          0.6];%NOx
-tmp = [0.8187
-       0.9048];
-
-log((tmp-lo_bnd)./lo_bnd)
-
-alpha = [-3.76 %SO2
-         -0.3];%NOx
-lo_bnd = repmat(lo_bnd,1,length(t));
-ef2 = exp(alpha*(t-1)).*(1-lo_bnd)+lo_bnd; % emission factor
-
-hold on;
-plot(yr, ef2, 'x:');
-
-my_gridline;
 
