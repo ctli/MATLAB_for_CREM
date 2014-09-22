@@ -3,6 +3,8 @@ close all
 clc
 format compact
 
+addpath 'c:\Program Files\GAMS\24.2';
+
 r = {'BJ','TJ','HE','SX','SD','NM','LN','JL','HL','SH','JS','ZJ','AH','FJ','HA','HB','HN','JX','SC','CQ','SN','GS','QH','NX','XJ','GD','GX','YN','GZ','HI'};
 
 JJJ = [1,2,3]; %BJ/TJ/HE
@@ -25,7 +27,6 @@ nhw_consumption_n = sum(nhw_consumption,2);
 
 % ==========
 [report, report_id] = getgdx(gdx_filename, 'report');
-
 GDP = squeeze(report(strcmp('GDP', report_id{1}),:,1:30));
 GDP_n = sum(GDP,2);
 
@@ -209,9 +210,12 @@ set(gca, 'xtick', 1:30, 'xticklabel', r);
 set(gca, 'tickdir', 'out');
 set(gca, 'ticklength', [0.005 0.005]);
 ylabel('Coal Consumption in 2030 (mtce)');
+text(12, 550, ['total = ', num2str(sum(col_consumption(end,:)), '%4.0f'), 'mt'], 'color', 'b');
 
 set(gcf, 'units', 'inch', 'pos', [0.7292    0.770    9.35    2]);
 set(gca, 'pos', [0.0569    0.1023    0.9263    0.7883]);
+
+
 
 
 %% policy scenario: national energy intensity
@@ -400,4 +404,5 @@ figure(20); hold on;
 bar(1:30, col_consumption(end,:), 0.55, 'facec', [1 0.5 0.5], 'edgecolor', 'none');
 legend('No Policy', 'w/ National Energy Intensity Target',2, 'orientation', 'horizontal');
 
+text(12, 500, ['total = ', num2str(sum(col_consumption(end,:)), '%4.0f'), 'mt'], 'color', 'r');
 

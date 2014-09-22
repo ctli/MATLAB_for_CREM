@@ -40,7 +40,7 @@ set(gcf, 'unit', 'inch', 'pos', [4.5833    5.9167    4.0000    3.0000]);
 %% Emissions in CREM
 yr = [2007, 2010:5:2030];
 
-gdx_filename = 'result_default.gdx';
+gdx_filename = 'result_default_new.gdx';
 [urban, urban_id] = getgdx(gdx_filename, 'urban'); % [urb]x[rs]x[g]x[t] = [9]x[30]x[11]x[6]
 SO2 = squeeze(urban(strcmp('SO2', urban_id{1}),:,:,:)); % [30]x[11]x[6]
 SO2_r = squeeze(sum(SO2,2)); % [30]x[6]
@@ -145,7 +145,7 @@ plot(yr, col_share_n, 'go-', 'markersize', 5);
 
 %% SO2 in ELE sector
 yr = [2007, 2010:5:2030];
-[urban, urban_id] = getgdx('result_default.gdx', 'urban');
+[urban, urban_id] = getgdx('result_default_new.gdx', 'urban');
 SO2 = squeeze(urban(strcmp('SO2', urban_id{1}),:,:,:));
 SO2_r = squeeze(sum(SO2,2));
 SO2_n = sum(SO2_r);
