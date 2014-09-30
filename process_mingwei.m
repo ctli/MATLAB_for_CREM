@@ -46,12 +46,13 @@ set(legend, 'box', 'off');
 % export_fig(file_name, '-painters');
 
 
-%% ==========
+%% National energy intensity
 yr = [2007, 2010:5:2030];
 figure(2); clf; hold on; box on;
 
 egy_intensity_n = getgdx('result_urban_exo.gdx', 'egy_intensity_n');
 plot(yr, egy_intensity_n, '^-', 'color', [0.5 0.5 0.5], 'markersize', 5);
+
 egy_intensity_n = getgdx('result_egyint_n.gdx', 'egy_intensity_n');
 plot(yr, egy_intensity_n, 'o-', 'color', [0 0.8 0], 'markersize', 5);
 
@@ -64,8 +65,7 @@ legend('No Policy', 'w/ Policy');
 % my_gridline; export_fig egy_int_n;
 
 
-%% ==========
-% regional energy intensity map (only 2007)
+%% regional energy intensity map (only 2007)
 egy_intensity_r = getgdx('result_urban_exo.gdx', 'egy_intensity_r'); % [r]x[t]
 egy_intensity_2007 = egy_intensity_r(:,1)';
 min(egy_intensity_2007)
@@ -108,11 +108,6 @@ textm(30, 89.5, '(No Data Avialable)', 'HorizontalAlignment', 'center', 'fontsiz
 
 textm(52, 100, 'Energy Intensity in 2007', 'HorizontalAlignment', 'center', 'fontsize', 10, 'fontweight', 'bold', 'color', 'k');
 
-% scaleruler('units', 'km', 'MajorTick', 0:500:1000, 'minortick',0:0.1:0.1, 'minorticklabel', '0', ...
-%            'yloc', 2.6e6, 'xloc', 8.75e6, 'fontsize', 6);
-% scaleruler('units', 'mi', 'MajorTick', 0:500:1000, 'minortick',0:0.1:0.1, 'minorticklabel', '0', ...
-%            'TickDir', 'down', 'yloc', 2.55e6, 'xloc', 8.75e6, 'fontsize', 6);
-
 % home-made colorbar (vertical):
 ax2 = axes('Position',[0.8450    0.1100    0.0246    0.3948]);
 
@@ -132,8 +127,8 @@ for i = 1:length(cvec), set(p(cdat==cvec(i)), 'Facecolor', scaling_color(i,:)); 
 % file_name = [file_heading, '_egy_intensity_map'];
 % export_fig(file_name, '-painters');
 
-%% ==========
-% regional energy intensity map (only 2030)
+
+%% regional energy intensity map (only 2030, no policy)
 egy_intensity_r = getgdx('result_urban_exo.gdx', 'egy_intensity_r'); % [r]x[t]
 egy_intensity_2030 = egy_intensity_r(:,end)';
 min(egy_intensity_2030)
@@ -176,11 +171,6 @@ textm(30, 89.5, '(No Data Avialable)', 'HorizontalAlignment', 'center', 'fontsiz
 
 textm(52, 100, 'Energy Intensity in 2030 (No Policy)', 'HorizontalAlignment', 'center', 'fontsize', 10, 'fontweight', 'bold', 'color', 'k');
 
-% scaleruler('units', 'km', 'MajorTick', 0:500:1000, 'minortick',0:0.1:0.1, 'minorticklabel', '0', ...
-%            'yloc', 2.6e6, 'xloc', 8.75e6, 'fontsize', 6);
-% scaleruler('units', 'mi', 'MajorTick', 0:500:1000, 'minortick',0:0.1:0.1, 'minorticklabel', '0', ...
-%            'TickDir', 'down', 'yloc', 2.55e6, 'xloc', 8.75e6, 'fontsize', 6);
-
 % home-made colorbar (vertical):
 ax2 = axes('Position',[0.8450    0.1100    0.0246    0.3948]);
 
@@ -200,8 +190,8 @@ for i = 1:length(cvec), set(p(cdat==cvec(i)), 'Facecolor', scaling_color(i,:)); 
 % file_name = [file_heading, '_egy_intensity_map_2030_noPolicy'];
 % export_fig(file_name, '-painters');
 
-%% ==========
-% regional energy intensity map (only 2030)
+
+%% regional energy intensity map (only 2030, w/ policy)
 egy_intensity_r = getgdx('result_egyint_n.gdx', 'egy_intensity_r'); % [r]x[t]
 egy_intensity_2030 = egy_intensity_r(:,end)';
 min(egy_intensity_2030)
@@ -244,11 +234,6 @@ textm(30, 89.5, '(No Data Avialable)', 'HorizontalAlignment', 'center', 'fontsiz
 
 textm(52, 100, 'Energy Intensity in 2030 (w/ Policy)', 'HorizontalAlignment', 'center', 'fontsize', 10, 'fontweight', 'bold', 'color', 'k');
 
-% scaleruler('units', 'km', 'MajorTick', 0:500:1000, 'minortick',0:0.1:0.1, 'minorticklabel', '0', ...
-%            'yloc', 2.6e6, 'xloc', 8.75e6, 'fontsize', 6);
-% scaleruler('units', 'mi', 'MajorTick', 0:500:1000, 'minortick',0:0.1:0.1, 'minorticklabel', '0', ...
-%            'TickDir', 'down', 'yloc', 2.55e6, 'xloc', 8.75e6, 'fontsize', 6);
-
 % home-made colorbar (vertical):
 ax2 = axes('Position',[0.8450    0.1100    0.0246    0.3948]);
 
@@ -269,76 +254,6 @@ for i = 1:length(cvec), set(p(cdat==cvec(i)), 'Facecolor', scaling_color(i,:)); 
 % export_fig(file_name, '-painters');
 
 
-%% regional energy consumption
-figure(6); clf; hold on;
-
-gdx_filename = 'result_urban_exo.gdx'; [report, report_id] = getgdx(gdx_filename, 'report');
-egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30)); % 2007~2020
-hb0 = bar(1:30, egycons', 'hist');
-set(hb0, 'facec', [0.8 0.8 0.8], 'edgecolor', 'none');
-
-gdx_filename = 'result_egyint_n.gdx'; [report, ~] = getgdx(gdx_filename, 'report');
-egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30)); % 2007~2020
-hb = bar(1:30, egycons', 'hist');
-color1 = [1 1 1];
-color2 = [0 0.5 0];
-cc = [linspace(color1(1),color2(1),size(report,2))
-      linspace(color1(2),color2(2),size(report,2))
-      linspace(color1(3),color2(3),size(report,2))]';
-for c = 1:size(report,2), set(hb(c), 'facec', cc(c,:)); end
-
-set(gca, 'fontsize', 7);
-xlim([0.4 30.6]);
-ylim([0 600]);
-set(gca, 'xtick', 1:30, 'xticklabel', r);
-set(gca, 'tickdir', 'out');
-set(gca, 'ticklength', [0.005 0.005]);
-ylabel('Energy Consumption, 2007-2030 (mtce)');
-set(gcf, 'units', 'inch', 'pos', [0.7292    6.7292    9.35    2]);
-set(gca, 'pos', [0.0569    0.1023    0.9263    0.8560]);
-my_gridline('y');
-
-legend([hb, hb0(1)], [report_id{2}, 'No Policy'], 'orientation', 'horizontal');
-set(legend, 'box', 'off');
-
-% export_fig('regional_egy_consumption', '-painters');
-
-
-%% regional coal consumption
-figure(7); clf; hold on;
-
-gdx_filename = 'result_default.gdx'; [egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
-col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
-hb0 = bar(1:30, col_consumption', 'hist');
-set(hb0, 'facec', [0.8 0.8 0.8], 'edgecolor', 'none');
-
-gdx_filename = 'result_egyint_n.gdx'; [egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
-col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
-hb = bar(1:30, col_consumption', 'hist');
-color1 = [1 1 1];
-color2 = [0 0.5 0];
-cc = [linspace(color1(1),color2(1),size(report,2))
-      linspace(color1(2),color2(2),size(report,2))
-      linspace(color1(3),color2(3),size(report,2))]';
-for c = 1:size(report,2), set(hb(c), 'facec', cc(c,:)); end
-
-set(gca, 'fontsize', 7);
-xlim([0.4 30.6]);
-ylim([0 500]);
-set(gca, 'xtick', 1:30, 'xticklabel', r);
-set(gca, 'tickdir', 'out');
-set(gca, 'ticklength', [0.005 0.005]);
-ylabel('Coal Consumption, 2007-2013 (mtce)');
-set(gcf, 'units', 'inch', 'pos', [0.7292    0.770    9.35    2]);
-set(gca, 'pos', [0.0569    0.1023    0.9263    0.8560]);my_gridline('y');
-
-legend([hb, hb0(1)], [report_id{2}, 'No Policy'], 'orientation', 'horizontal', 1);
-set(legend, 'box', 'off');
-
-my_gridline('y');
-% export_fig('regional_coal_consumption', '-painters');
-
-
 %% national energy consumption
 figure(8); clf; hold on; box on;
 
@@ -352,10 +267,15 @@ egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30)); %(COL+CRU+GAS
 egycons_n = sum(egycons,2);
 plot(yr, egycons_n, 'o-', 'color', [0 0.8 0], 'markersize', 5);
 
+[report, report_id] = getgdx('result_ccap_n.gdx', 'report');
+egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30)); %(COL+CRU+GAS)-(ELE export)+NHW
+egycons_n = sum(egycons,2);
+plot(yr, egycons_n, 'rx-', 'markersize', 5);
+
 set(gca, 'fontsize', 8);
 ylabel('National Energy Consumption (mtce)', 'fontsize', 9);
 set(gcf, 'unit', 'inch', 'pos', [0.25+4.15    0.7917    4.0000    3.0000]);
-legend('No Policy', 'w/ Policy', 2);
+% legend('No Policy', 'Action Plan', 'CO2 Cap & Trade', 2);
 
 % my_gridline; export_fig national_energy_consumption;
 
@@ -373,12 +293,91 @@ col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
 col_consumption_n = sum(col_consumption,2);
 plot(yr, col_consumption_n, 'o-', 'color', [0 0.8 0], 'markersize', 5);
 
+[egyreport2, egyreport2_id] = getgdx('result_ccap_n', 'egyreport2');
+col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
+col_consumption_n = sum(col_consumption,2);
+plot(yr, col_consumption_n, 'rx-', 'markersize', 5);
+
 set(gca, 'fontsize', 8);
 ylabel('National Coal Consumption (mtce)', 'fontsize', 9);
 set(gcf, 'unit', 'inch', 'pos', [0.25+4.15    0.7917    4.0000    3.0000]);
-legend('No Policy', 'w/ Policy', 2);
+legend('No Policy', 'Action Plan', 'CO2 Cap & Trade', 2);
 
 % my_gridline; export_fig national_coal_consumption;
+
+
+%% national coal share
+figure(91); clf; hold on; box on;
+
+[egyreport2, egyreport2_id] = getgdx('result_urban_exo', 'egyreport2');
+col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
+col_consumption_n = sum(col_consumption,2);
+[report, report_id] = getgdx('result_urban_exo', 'report');
+egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30)); %(COL+CRU+GAS)-(ELE export)+NHW
+egycons_n = sum(egycons,2);
+
+col_share_n = col_consumption_n./egycons_n; % national coal share
+plot(yr, col_share_n, '^-', 'color', [0.5 0.5 0.5], 'markersize', 5);
+
+[egyreport2, egyreport2_id] = getgdx('result_egyint_n', 'egyreport2');
+col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
+col_consumption_n = sum(col_consumption,2);
+[report, report_id] = getgdx('result_egyint_n', 'report');
+egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30)); %(COL+CRU+GAS)-(ELE export)+NHW
+egycons_n = sum(egycons,2);
+
+col_share_n = col_consumption_n./egycons_n; % national coal share
+plot(yr, col_share_n, 'o-', 'color', [0 0.8 0], 'markersize', 5);
+
+ylim([0 0.8]);
+set(gca, 'fontsize', 8);
+ylabel('National Coal Share (-)', 'fontsize', 9);
+set(gcf, 'unit', 'inch', 'pos', [0.25+4.15    0.7917    4.0000    3.0000]);
+legend('No Policy', 'w/ Policy', 3);
+
+my_gridline;
+%export_fig national_coal_consumption;
+
+
+%% national coal share & nhw share
+figure(92); clf; hold on; box on;
+
+[egyreport2, egyreport2_id] = getgdx('result_urban_exo', 'egyreport2');
+col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
+col_consumption_n = sum(col_consumption,2);
+nhw_consumption = squeeze(egyreport2(1,:,strcmp('NHW', egyreport2_id{3}),1:30))/0.12*0.356;
+nhw_consumption_n = sum(nhw_consumption,2);
+[report, report_id] = getgdx('result_urban_exo', 'report');
+egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30));
+egycons_n = sum(egycons,2);
+
+col_share_n = col_consumption_n./egycons_n;
+nhw_share_n = nhw_consumption_n./egycons_n;
+h1 = plot(yr, col_share_n, '^-', 'color', [0.5 0.5 0.5], 'markersize', 5);
+h2 = plot(yr, nhw_share_n, '^-', 'color', [0.5 0.5 0.5], 'markersize', 5, 'markerf', [0.5 0.5 0.5]);
+
+[egyreport2, egyreport2_id] = getgdx('result_egyint_n', 'egyreport2');
+col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
+col_consumption_n = sum(col_consumption,2);
+nhw_consumption = squeeze(egyreport2(1,:,strcmp('NHW', egyreport2_id{3}),1:30))/0.12*0.356;
+nhw_consumption_n = sum(nhw_consumption,2);
+[report, report_id] = getgdx('result_egyint_n', 'report');
+egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30));
+egycons_n = sum(egycons,2);
+
+col_share_n = col_consumption_n./egycons_n;
+nhw_share_n = nhw_consumption_n./egycons_n;
+h3 = plot(yr, col_share_n, 'o-', 'color', [0 0.8 0], 'markersize', 5);
+h4 = plot(yr, nhw_share_n, 'o-', 'color', [0 0.8 0], 'markersize', 5, 'markerf', [0 0.8 0]);
+
+ylim([0 0.8]);
+set(gca, 'fontsize', 8);
+ylabel('Share of Primary Fuel (-)', 'fontsize', 9);
+set(gcf, 'unit', 'inch', 'pos', [0.25+4.15    0.7917    4.0000    3.0000]);
+legend([h1 h3 h2 h4], 'Coal--No Policy', 'Coal--w/ Policy', 'Non-Fossil--No Policy', 'Non-Fossil--w/ Policy', 'location', 'west');
+
+my_gridline;
+% export_fig national_share;
 
 
 %% GDP
@@ -394,31 +393,45 @@ GDP = squeeze(report(strcmp('GDP', report_id{1}),:,1:30));
 GDP_n = sum(GDP,2);
 plot(yr, GDP_n, 'o-', 'color', [0 0.8 0], 'markersize', 5);
 
+[report, report_id] = getgdx('result_ccap_n.gdx', 'report');
+GDP = squeeze(report(strcmp('GDP', report_id{1}),:,1:30));
+GDP_n = sum(GDP,2);
+plot(yr, GDP_n, 'rx-', 'markersize', 5);
+
 set(gca, 'fontsize', 8);
 ylabel('GDP (Billion USD in 2007 value)', 'fontsize', 9);
 set(gcf, 'unit', 'inch', 'pos', [0.25+4.15    0.7917    4.0000    3.0000]);
-legend('No Policy', 'w/ Policy', 2);
+% legend('No Policy', 'w/ Policy', 2);
+legend('No Policy', 'Action Plan', 'CO2 Cap & Trade', 2);
 
 % my_gridline; export_fig GDP;
 
 
-%% GDP
+%% Urban emissions
 gdx_filename = 'result_urban_exo.gdx';
 [urban, urban_id] = getgdx(gdx_filename, 'urban');
 urban_CHN = zeros(length(urban_id{1}),length(urban_id{4}));
 for i = 1:length(urban_id{1})
     urban_extract = squeeze(sum(squeeze(urban(i,:,:,:)),2));
     urban_CHN(i,:) = sum(urban_extract);
-end
-
-for i = 1:length(urban_id{1})
-figure(10+i); clf; box on;
-plot(yr, urban_CHN(i,:), '^-', 'color', [0.5 0.5 0.5], 'markersize', 5);
-set(gca, 'fontsize', 8);
-ylabel('Urban pollution emissions (Tg)');
-title(urban_id{1}(i), 'fontsize', 10, 'fontweight', 'bold');
-
-set(gcf, 'unit', 'inch', 'pos', [0.25    4.75    4.0000    3.0000]);
+    
+    figure(10+i); clf; box on;
+    plot(yr, urban_CHN(i,:), '^-', 'color', [0.5 0.5 0.5], 'markersize', 5);
+    set(gca, 'fontsize', 8);
+    ylabel('Urban pollution emissions (Tg)');
+    title(urban_id{1}(i), 'fontsize', 10, 'fontweight', 'bold');
+    
+    if i==1, ylim([0 3]); end
+    if i==2, ylim([0 500]); end
+    if i==3, ylim([0 30]); end
+    if i==4, ylim([0 80]); end
+    if i==5, ylim([0 5.5]); end
+    if i==6, ylim([0 55]); end
+    if i==7, ylim([0 40]); end
+    if i==8, ylim([0 70]); end
+    if i==9, ylim([0 65]); end
+    
+    set(gcf, 'unit', 'inch', 'pos', [0.25    4.75    4.0000    3.0000]);
 end
 % ==========
 gdx_filename = 'result_egyint_n.gdx';
@@ -427,18 +440,34 @@ urban_CHN = zeros(length(urban_id{1}),length(urban_id{4}));
 for i = 1:length(urban_id{1})
     urban_extract = squeeze(sum(squeeze(urban(i,:,:,:)),2));
     urban_CHN(i,:) = sum(urban_extract);
+    
+    figure(10+i); hold on; box on;
+    plot(yr, urban_CHN(i,:), 'o-', 'color', [0 0.8 0], 'markersize', 5);
+    if i == 1, legend('No Policy', 'w/ Policy', 2); end
+    
+    export_filename = ['fig_', char(urban_id{1}(i))];
+    % my_gridline; export_fig(export_filename);
 end
-
+% ==========
+gdx_filename = 'result_ccap_n.gdx';
+[urban, urban_id] = getgdx(gdx_filename, 'urban');
+urban_CHN = zeros(length(urban_id{1}),length(urban_id{4}));
 for i = 1:length(urban_id{1})
-figure(10+i); hold on; box on;
-plot(yr, urban_CHN(i,:), 'o-', 'color', [0 0.8 0], 'markersize', 5);
-if i == 1
-    legend('No Policy', 'w/ Policy', 2);  
+    urban_extract = squeeze(sum(squeeze(urban(i,:,:,:)),2));
+    urban_CHN(i,:) = sum(urban_extract);
+    
+    figure(10+i); hold on; box on;
+    plot(yr, urban_CHN(i,:), 'rx-', 'markersize', 5);
+    if i == 1
+        legend('No Policy', 'Action Plan', 'CO2 Cap & Trade', 4);
+        set(legend, 'fontsize', 10);
+    end
+    
+    export_filename = ['fig_', char(urban_id{1}(i))];
+    my_gridline;
+    % export_fig(export_filename);
 end
 
-export_filename = ['fig_', char(urban_id{1}(i))];
-my_gridline; export_fig(export_filename);
-end
 
 %% SO2 from ELE sector
 yr = [2007, 2010:5:2030];
@@ -469,7 +498,7 @@ legend(fliplr(hb), 'Electricity', 'Other Sectors', 2);
 set(gcf, 'unit', 'inch', 'pos', [8.8750    5.9167    4.0000    3.0000]);
 title('No Policy', 'fontsize', 10);
 
-export_fig('ELE_SO2', '-painters');
+% export_fig('ELE_SO2', '-painters');
 
 % ==========
 yr = [2007, 2010:5:2030];
@@ -500,4 +529,4 @@ legend(fliplr(hb), 'Electricity', 'Other Sectors', 2);
 set(gcf, 'unit', 'inch', 'pos', [8.8750    5.9167    4.0000    3.0000]);
 title('w/ Policy', 'fontsize', 10);
 
-export_fig('ELE_SO2_wPolicy', '-painters');
+% export_fig('ELE_SO2_wPolicy', '-painters');
