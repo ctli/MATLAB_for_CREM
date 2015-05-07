@@ -8,90 +8,89 @@ yr = [2007, 2010:5:2030];
 r = {'BJ','TJ','HE','SX','SD','NM','LN','JL','HL','SH','JS','ZJ','AH','FJ','HA','HB','HN','JX','SC','CQ','SN','GS','QH','NX','XJ','GD','GX','YN','GZ','HI'};
 
 
-% ================================================================== %%
-% baseline
-gdx_filename = 'result_default.gdx';
-[urban, urban_id] = getgdx(gdx_filename, 'urban');
-urban_CHN = zeros(length(urban_id{1}),length(urban_id{4}));
-for i = 1:length(urban_id{1})
-    urban_extract = squeeze(sum(squeeze(urban(i,:,:,:)),2));
-    urban_CHN(i,:) = sum(urban_extract);
-end
-
-for i = 1:length(urban_id{1})
-figure(i); clf;
-plot(yr, urban_CHN(i,:), 'bs-');
-set(gca, 'fontsize', 8);
-ylabel('Urban pollution emissions (Tg)');
-title(urban_id{1}(i), 'fontsize', 10, 'fontweight', 'bold');
-set(gcf, 'unit', 'inch', 'pos', [21.2604+0.5*i    5.5729-0.5*i    4.0000    3.0000]);
-end
-
-[report, report_id] = getgdx(gdx_filename, 'report');
-GDP = squeeze(report(strcmp('GDP', report_id{1}),:,1:30));
-GDP_n = sum(GDP,2);
-figure(10); clf; box on;
-plot(yr, GDP_n, 'bs-', 'markersize', 5);
-set(gca, 'fontsize', 8);
-ylabel('GDP, Billion US Dollor (2007 Value)');
-set(gcf, 'unit', 'inch', 'pos', [29.9583    5.5729-0.5*i    4.0000    3.0000]);
-
-egy_intensity_n = getgdx(gdx_filename, 'egy_intensity_n');
-figure(11); clf; box on;
-plot(yr, egy_intensity_n, 'bs-', 'markersize', 5);
-ylim([0.3 0.8]);
-ylabel('National Energy Intensity');
-set(gcf, 'unit', 'inch', 'pos', [29.9583    5.0625    4.0000    3.0000]);
-
-[egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
-col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
-col_consumption_n = sum(col_consumption,2);
-figure(12); clf; box on;
-plot(yr, col_consumption_n, 'bs-', 'markersize', 5);
-ylabel('Coal Consumption (mtce)');
-set(gcf, 'unit', 'inch', 'pos', [33.1771    2.8021    4.0000    3.0000]);
-
-
-%% baseline
-gdx_filename = 'result_default_new.gdx';
-[urban, urban_id] = getgdx(gdx_filename, 'urban');
-urban_CHN = zeros(length(urban_id{1}),length(urban_id{4}));
-for i = 1:length(urban_id{1})
-    urban_extract = squeeze(sum(squeeze(urban(i,:,:,:)),2));
-    urban_CHN(i,:) = sum(urban_extract);
-end
-
-for i = 1:length(urban_id{1})
-figure(i); hold on;
-plot(yr, urban_CHN(i,:), 'kx-');
-set(gca, 'fontsize', 8);
-ylabel('Urban pollution emissions (Tg)');
-title(urban_id{1}(i), 'fontsize', 10, 'fontweight', 'bold');
-set(gcf, 'unit', 'inch', 'pos', [21.2604+0.5*i    5.5729-0.5*i    4.0000    3.0000]);
-end
-
-[report, report_id] = getgdx(gdx_filename, 'report');
-GDP = squeeze(report(strcmp('GDP', report_id{1}),:,1:30));
-GDP_n = sum(GDP,2);
+% % ================================================================== %%
+% % baseline
+% gdx_filename = 'result_default.gdx';
+% [urban, urban_id] = getgdx(gdx_filename, 'urban');
+% urban_CHN = zeros(length(urban_id{1}),length(urban_id{4}));
+% for i = 1:length(urban_id{1})
+%     urban_extract = squeeze(sum(squeeze(urban(i,:,:,:)),2));
+%     urban_CHN(i,:) = sum(urban_extract);
+% end
+% 
+% for i = 1:length(urban_id{1})
+% figure(i); clf;
+% plot(yr, urban_CHN(i,:), 'bs-');
+% set(gca, 'fontsize', 8);
+% ylabel('Urban pollution emissions (Tg)');
+% title(urban_id{1}(i), 'fontsize', 10, 'fontweight', 'bold');
+% set(gcf, 'unit', 'inch', 'pos', [0.3+0.3*i    4.3-0.3*i    4.0000    3.0000]);
+% end
+% 
+% [report, report_id] = getgdx(gdx_filename, 'report');
+% GDP = squeeze(report(strcmp('GDP', report_id{1}),:,1:30));
+% GDP_n = sum(GDP,2);
+% figure(10); clf; box on;
+% plot(yr, GDP_n, 'bs-', 'markersize', 5);
+% set(gca, 'fontsize', 8);
+% ylabel('GDP, Billion US Dollor (2007 Value)');
+% set(gcf, 'unit', 'inch', 'pos', [29.9583    5.5729-0.5*i    4.0000    3.0000]);
+% 
+% egy_intensity_n = getgdx(gdx_filename, 'egy_intensity_n');
+% figure(11); clf; box on;
+% plot(yr, egy_intensity_n, 'bs-', 'markersize', 5);
+% ylim([0.3 0.8]);
+% ylabel('National Energy Intensity');
+% set(gcf, 'unit', 'inch', 'pos', [29.9583    5.0625    4.0000    3.0000]);
+% 
+% [egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
+% col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
+% col_consumption_n = sum(col_consumption,2);
+% figure(12); clf; box on;
+% plot(yr, col_consumption_n, 'bs-', 'markersize', 5);
+% ylabel('Coal Consumption (mtce)');
+% set(gcf, 'unit', 'inch', 'pos', [33.1771    2.8021    4.0000    3.0000]);
+% 
+% 
+% %% baseline
+% gdx_filename = 'result_default_new.gdx';
+% [urban, urban_id] = getgdx(gdx_filename, 'urban');
+% urban_CHN = zeros(length(urban_id{1}),length(urban_id{4}));
+% for i = 1:length(urban_id{1})
+%     urban_extract = squeeze(sum(squeeze(urban(i,:,:,:)),2));
+%     urban_CHN(i,:) = sum(urban_extract);
+% end
+% 
+% for i = 1:length(urban_id{1})
+% figure(i); hold on;
+% plot(yr, urban_CHN(i,:), 'kx-');
+% set(gca, 'fontsize', 8);
+% ylabel('Urban pollution emissions (Tg)');
+% title(urban_id{1}(i), 'fontsize', 10, 'fontweight', 'bold');
+% end
+% 
+% [report, report_id] = getgdx(gdx_filename, 'report');
+% GDP = squeeze(report(strcmp('GDP', report_id{1}),:,1:30));
+% GDP_n = sum(GDP,2);
 figure(10); hold on;
-plot(yr, GDP_n, 'kx-', 'markersize', 5);
-set(gca, 'fontsize', 8);
-ylabel('GDP, Billion US Dollor (2007 Value)');
+% plot(yr, GDP_n, 'kx-', 'markersize', 5);
+% set(gca, 'fontsize', 8);
+% ylabel('GDP, Billion US Dollor (2007 Value)');
 set(gcf, 'unit', 'inch', 'pos', [29.9583    5.5729-0.5*i    4.0000    3.0000]);
-
-egy_intensity_n = getgdx(gdx_filename, 'egy_intensity_n');
+% 
+% egy_intensity_n = getgdx(gdx_filename, 'egy_intensity_n');
 figure(11); hold on;
-plot(yr, egy_intensity_n, 'kx-', 'markersize', 5);
-ylim([0.3 0.8]);
-ylabel('National Energy Intensity');
+% plot(yr, egy_intensity_n, 'kx-', 'markersize', 5);
+% ylim([0.3 0.8]);
+% ylabel('National Energy Intensity');
 set(gcf, 'unit', 'inch', 'pos', [29.9583    5.0625    4.0000    3.0000]);
-
-[egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
-col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
-col_consumption_n = sum(col_consumption,2);
+% 
+% [egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
+% col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
+% col_consumption_n = sum(col_consumption,2);
 figure(12); hold on;
-plot(yr, col_consumption_n, 'kx-', 'markersize', 5);
-ylabel('Coal Consumption (mtce)');
+% plot(yr, col_consumption_n, 'kx-', 'markersize', 5);
+% ylabel('Coal Consumption (mtce)');
 set(gcf, 'unit', 'inch', 'pos', [33.1771    2.8021    4.0000    3.0000]);
 
 
@@ -111,7 +110,8 @@ plot(yr, urban_CHN(i,:), 'r^-', 'markersize', 5);
 set(gca, 'fontsize', 8);
 ylabel('Urban pollution emissions (Tg)');
 title(urban_id{1}(i), 'fontsize', 10, 'fontweight', 'bold');
-set(gcf, 'unit', 'inch', 'pos', [21.2604+0.5*i    5.5729-0.5*i    4.0000    3.0000]);
+set(gcf, 'unit', 'inch', 'pos', [0.3+0.3*i    4.3-0.3*i    4.0000    3.0000]);
+
 end
 
 [report, report_id] = getgdx(gdx_filename, 'report');
@@ -162,7 +162,7 @@ if i == 1
 end
 
 export_filename = ['fig_', char(urban_id{1}(i))];
-my_gridline; %export_fig(export_filename);
+% my_gridline; %export_fig(export_filename);
 end
 
 [report, report_id] = getgdx(gdx_filename, 'report');
@@ -180,6 +180,100 @@ col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
 col_consumption_n = sum(col_consumption,2);
 figure(12); hold on;
 plot(yr, col_consumption_n, 'go-', 'markersize', 5);
+
+
+%% emission factor
+yr = 2010:5:2100;
+t = 1:length(yr);
+
+alpha = [-0.03 %SO2
+         -0.01];%NOx
+ef = exp(alpha*(t-1)); % emission factor
+
+lo_bnd = [0.85 %SO2
+          0.8];%NOx
+
+alpha = [-3.75 %SO2
+         -0.4];%NOx
+
+lo_bnd = repmat(lo_bnd,1,length(t));
+ef2 = exp(alpha*(t-1)).*(1-lo_bnd)+lo_bnd; % emission factor
+
+figure(100); clf; hold on; box on;
+plot(yr, ef, 'o-', 'markersize', 4, 'color', [0.5 0.9 1], 'markerf', [0.5 0.9 1], 'linewidth', 2);
+plot(yr, ef2, 'o-', 'markersize', 4, 'color', [1 0.8 0.8], 'markerf', [1 0.8 0.8], 'linewidth', 2);
+ylim([0.5 1]);
+set(gca, 'fontsize', 8);
+ylabel('Emission Factor')
+
+
+%% Emission factor in CREM
+yr = 2010:5:2030;
+
+gdx_filename = 'merge_egy_int_n.gdx';
+
+[curb0, curb0_id] = getgdx(gdx_filename, 'curb0');
+SO2_ele = squeeze(curb0(1,strcmp('SO2', curb0_id{2}),1,strcmp('ELE',curb0_id{4}),1));
+SO2_agr = squeeze(curb0(1,strcmp('SO2', curb0_id{2}),1,strcmp('AGR',curb0_id{4}),1));
+NOX_ele = squeeze(curb0(1,strcmp('NOX', curb0_id{2}),1,strcmp('ELE',curb0_id{4}),1));
+NOX_agr = squeeze(curb0(1,strcmp('NOX', curb0_id{2}),1,strcmp('AGR',curb0_id{4}),1));
+BC_ele =  squeeze(curb0(1,strcmp('BC', curb0_id{2}),1,strcmp('ELE',curb0_id{4}),1));
+VOC_ele =  squeeze(curb0(1,strcmp('VOC', curb0_id{2}),1,strcmp('ELE',curb0_id{4}),1));
+
+[curb, curb_id] = getgdx(gdx_filename, 'curb');
+% curb_id{2} %BC/CO/NH3/NOX/OC/PH10/PM25/SO2/VOC
+% curb_id{3} %r
+% curb_id{4} %ELE/AGR
+% curb_id{5} %COL/OIL/CRU
+
+curb_SO2_ele = curb(:,strcmp('SO2', curb_id{2}),1,strcmp('ELE', curb_id{4}),1);
+curb_SO2_ele = curb_SO2_ele/(SO2_ele*0.358);
+
+curb_SO2_agr = curb(:,strcmp('SO2', curb_id{2}),1,strcmp('AGR', curb_id{4}),1);
+curb_SO2_agr = curb_SO2_agr/(SO2_agr*0.89);
+
+h1 = plot(yr, curb_SO2_ele(2:end), 's-');
+h2 = plot(yr, curb_SO2_agr(2:end), 'x-', 'markersize', 10);
+
+% ==============================
+curb_NOX_ele = curb(:,strcmp('NOX', curb_id{2}),1,strcmp('ELE', curb_id{4}),1);
+curb_NOX_ele = curb_NOX_ele/(NOX_ele*0.8656);
+
+h3 = plot(yr, curb_NOX_ele(2:end), 'ro-');
+
+% ==============================
+curb_BC_ele = curb(:,strcmp('BC', curb_id{2}),1,strcmp('ELE', curb_id{4}),1);
+curb_BC_ele = curb_BC_ele/BC_ele;
+
+curb_VOC_ele = curb(:,strcmp('VOC', curb_id{2}),1,strcmp('ELE', curb_id{4}),1);
+curb_VOC_ele = curb_VOC_ele/VOC_ele;
+
+h4 = plot(yr, curb_BC_ele(2:end), 'm^-');
+h5 = plot(yr, curb_VOC_ele(2:end), 'mv-');
+
+legend([h1; h2; h3; h4;h5], 'SO2,ELE', 'SO2,AGR', 'NOX,ELE', 'BC,ELE', 'VOC,ELE',4);
+my_gridline;
+
+%% Emission factor in CREM
+yr = 2010:5:2100;
+dyr = yr-yr(1);
+
+ef = exp(-0.03*dyr);
+ef2 = exp(-0.01*dyr);
+
+figure(10); clf;
+hp = plot(yr, ef, 'x-', yr, ef2, 'x-');
+ylim([0 1]);
+xlim([2010 2100]);
+set(gca, 'ytick', 0:0.1:1, 'xtick', 2010:10:2100);
+legend(flipud(hp), '\alpha = -0.01', '\alpha = -0.03');
+defaultratio;
+set(gca, 'fontsize', 8);
+ylabel('exp(\alpha*t)', 'fontsize', 10);
+my_gridline;
+
+% export_fig exp_decay -painters;
+
 
 
 % %% SO2: combustion emission vs process emission

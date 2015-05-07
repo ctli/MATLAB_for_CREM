@@ -42,3 +42,45 @@ discrepancy = co2_chk3_n./co2_chk2_n;
 for yn = 1:length(yr)
     text(yr(yn), co2_chk3_n(yn)/1e3-0.75, num2str(discrepancy(yn), '%2.2f'), 'fontsize', 8, 'color', 'g', 'horizontalalignment', 'center');
 end
+
+
+%% CO2
+figure(2); clf; hold on; box on;
+
+yr = [2007,2010,2015,2020,2025,2030];
+gdx_filename = 'result_ccap_r_new.gdx';
+
+% ==========
+% raw
+co2_chk = getgdx(gdx_filename, 'co2_chk');
+co2_chk_n = sum(co2_chk);
+plot(yr, co2_chk_n/1e3, 'xb', 'markersize', 7, 'linewidth', 1);
+pctg = co2_chk_n(2:end)./co2_chk_n(1:end-1);
+for yn = 1:length(yr)-1
+    text(yr(yn+1), co2_chk_n(yn+1)/1e3+0.75, num2str(pctg(yn), '%2.2f'), 'color', 'b', 'fontsize', 8, 'horizontalalignment', 'center');
+end
+
+% ==========
+co2_chk2 = getgdx(gdx_filename, 'co2_chk2');
+co2_chk2_n = sum(co2_chk2);
+plot(yr, co2_chk2_n/1e3, 'sr', 'markersize', 7, 'linewidth', 1);
+
+% ==========
+co2_chk3 = getgdx(gdx_filename, 'co2_chk3');
+co2_chk3_n = sum(co2_chk3);
+plot(yr, co2_chk3_n/1e3, 'dg', 'markersize', 7, 'linewidth', 1);
+
+pctg = co2_chk3_n(2:end)./co2_chk3_n(1:end-1);
+for yn = 1:length(yr)-1
+    text(yr(yn+1), co2_chk3_n(yn+1)/1e3-0.75, num2str(pctg(yn), '%2.2f'), 'fontsize', 8, 'horizontalalignment', 'center');
+end
+
+% ==========
+legend('chk(raw)', 'chk2 (exclude ele export)', 'chk3 (exclude ele prod)', 2)
+ylim([0 20]);
+
+% discrepancy = co2_chk3_n./co2_chk2_n;
+% for yn = 1:length(yr)
+%     text(yr(yn), co2_chk3_n(yn)/1e3-0.75, num2str(discrepancy(yn), '%2.2f'), 'fontsize', 8, 'color', 'g', 'horizontalalignment', 'center');
+% end
+

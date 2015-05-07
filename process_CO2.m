@@ -23,13 +23,15 @@ figure(1); clf;
 h1 = plot(yr, co2_n/1e3, '^-', 'markersize', 7, 'color', [0.5 0.5 0.5], 'linewidth', 1);
 set(gca, 'fontsize', 10);
 ylabel('CO2 (Billion tons)', 'Fontsize', 12, 'fontweight', 'bold');
-set(gcf, 'unit', 'inch', 'pos', [8.2188    0.9688    4.0000    3.0000]);
+set(gcf, 'unit', 'inch', 'pos', [4.0208    5.2292    4.0000    3.0000]);
 ylim([0 20]);
 set(gca, 'yminortick', 'on');
 set(gca, 'ytick', 0:5:20);
 % for yn = 3:length(yr)
 %     text(yr(yn), co2_n(yn)/1e3+0.5, num2str(co2_n(yn)/1e3, '%2.1f'), 'fontsize', 8, 'horizontalalignment', 'center');
 % end
+
+sum(co2_n(3:end)/1e3)
 
 % ==============================
 gdx_filename = 'result_egyint_n.gdx';
@@ -40,6 +42,8 @@ co2_n = squeeze(sum(co2_r,2));
 figure(1); hold on;
 h2 = plot(yr, co2_n/1e3, 'o-', 'markersize', 7, 'color', [0 0.8 0], 'linewidth', 1);
 
+sum(co2_n(3:end)/1e3)
+
 % ==============================
 gdx_filename = 'result_ccap_n_old.gdx';
 [report2, report2_id] = getgdx(gdx_filename, 'report2');
@@ -48,6 +52,8 @@ co2_r = squeeze(sum(co2,2));
 co2_n = squeeze(sum(co2_r,2));
 figure(1); hold on;
 h3 = plot(yr, co2_n/1e3, 'x-', 'markersize', 7, 'color', 'r', 'linewidth', 1);
+
+sum(co2_n(3:end)/1e3)
 
 % ==============================
 co2_n_old = co2_n(end);
@@ -125,6 +131,8 @@ set(ax1, 'layer', 'top');
 
 % export_fig CO2 -painters;
 
+disp('==============================');
+
 
 %% GDP
 gdx_filename = 'result_urban_exo.gdx';
@@ -135,7 +143,7 @@ figure(2); clf; hold on; box on;
 h1  = plot(yr, GDP_n, '^-', 'markersize', 7, 'color', [0.5 0.5 0.5], 'linewidth', 1);
 set(gca, 'fontsize', 10);
 ylabel('GDP (Billion US dollor in 2007 value)', 'Fontsize', 12, 'fontweight', 'bold');
-set(gcf, 'unit', 'inch', 'pos', [12.4167    0.9688    4.0000    3.0000]);
+set(gcf, 'unit', 'inch', 'pos', [8.1875    5.2292    4.0000    3.0000]);
 
 % ==============================
 gdx_filename = 'result_egyint_n.gdx';
@@ -224,5 +232,6 @@ manipulate_order = [new_order(z);new_order(~z)];
 set(ax1,'children',manipulate_order);
 set(ax1, 'layer', 'top');
 
-% export_fig GDP -painters;
+% export_fig GDP -c -painters;
+
 

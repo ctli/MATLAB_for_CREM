@@ -12,7 +12,11 @@ r = {'BJ','TJ','HE','SX','SD','NM','LN','JL','HL','SH','JS','ZJ','AH','FJ','HA',
 
 yr_geng = 2004:2012;
 SO2_geng = [29.5 33.5 34.3 32.6 31.3 28.9 28.5 29.8 29.7];
-NOX_geng = [18.5, 21.2, 23.1 25 26 26.5 28.5 31 31.5];
+NOX_geng = [18.5 21.2 23.1 25 26 26.5 28.5 31 31.5];
+NH3_geng = [11.1 	11.0 	11.1 	10.2 	10.5 	10.6 	10.5 	10.6 	10.6];
+OC_geng = [3.3 	3.4 	3.5 	3.3 	3.4 	3.4 	3.4 	3.4 	3.4];
+BC_geng = [1.6 	1.7 	1.8 	1.7 	1.8 	1.8 	1.8 	1.8 	1.8];
+
 
 figure(1); clf;
 bar(yr_geng, SO2_geng, 'facec', [6 125 255]/255, 'edge', 'none');
@@ -36,48 +40,44 @@ title('NOX', 'fontsize', 10);
 ylabel('Tg');
 set(gcf, 'unit', 'inch', 'pos', [4.5833    5.9167    4.0000    3.0000]);
 
+figure(3); clf;
+bar(yr_geng, NH3_geng, 'facec', [6 125 255]/255, 'edge', 'none');
+set(gca, 'fontsize', 8);
+ylim([0 12]);
+xlim([2003 2031]);
+set(gca, 'xtick', [2005 2010:5:2030]);
+set(gca, 'tickdir', 'out');
+title('NH3', 'fontsize', 10);
+ylabel('Tg');
+set(gcf, 'unit', 'inch', 'pos', [0.3646    1.9479    4.0000    3.0000]);
+
+figure(4); clf;
+bar(yr_geng, OC_geng, 'facec', [6 125 255]/255, 'edge', 'none');
+set(gca, 'fontsize', 8);
+ylim([0 4]);
+xlim([2003 2031]);
+set(gca, 'xtick', [2005 2010:5:2030]);
+set(gca, 'tickdir', 'out');
+title('OC', 'fontsize', 10);
+ylabel('Tg');
+set(gcf, 'unit', 'inch', 'pos', [4.5833    1.9479    4.0000    3.0000]);
+
+figure(5); clf;
+bar(yr_geng, BC_geng, 'facec', [6 125 255]/255, 'edge', 'none');
+set(gca, 'fontsize', 8);
+ylim([0 2]);
+xlim([2003 2031]);
+set(gca, 'xtick', [2005 2010:5:2030]);
+set(gca, 'tickdir', 'out');
+title('BC', 'fontsize', 10);
+ylabel('Tg');
+set(gcf, 'unit', 'inch', 'pos', [8.7917    1.9479    4.0000    3.0000]);
+
+
 
 %% Emissions in CREM
 yr = [2007, 2010:5:2030];
 
-gdx_filename = 'result_default_new.gdx';
-[urban, urban_id] = getgdx(gdx_filename, 'urban'); % [urb]x[rs]x[g]x[t] = [9]x[30]x[11]x[6]
-SO2 = squeeze(urban(strcmp('SO2', urban_id{1}),:,:,:)); % [30]x[11]x[6]
-SO2_r = squeeze(sum(SO2,2)); % [30]x[6]
-SO2_n = sum(SO2_r); % [1x6]
-NOX = squeeze(urban(strcmp('NOX', urban_id{1}),:,:,:)); % [30]x[11]x[6]
-NOX_r = squeeze(sum(NOX,2)); % [30]x[6]
-NOX_n = sum(NOX_r); % [1x6]
-
-[egyreport2, egyreport2_id] = getgdx(gdx_filename, 'egyreport2');
-col_consumption = squeeze(egyreport2(1,:,strcmp('COL', egyreport2_id{3}),1:30));
-col_consumption_n = sum(col_consumption,2);
-[report, report_id] = getgdx(gdx_filename, 'report');
-egycons = squeeze(report(strcmp('egycons', report_id{1}),:,1:30)); %(COL+CRU+GAS)-(ELE export)+NHW
-egycons_n = sum(egycons,2);
-col_share_n = col_consumption_n./egycons_n; % national coal share
-
-figure(1); hold on;
-plot(yr, SO2_n, 'x-k');
-
-figure(2); hold on;
-plot(yr, NOX_n, 'x-k');
-
-figure(3); clf;
-plot([2007 2010:5:2030], col_consumption_n/1e3, 'kx-');
-set(gca, 'fontsize', 8);
-set(gcf, 'units', 'inch', 'pos', [0.3646    1.9375    4.0000    3.0000]);
-ylabel('Coal Consumption (Billion ton)');
-
-figure(4); clf;
-plot([2007 2010:5:2030], col_share_n, 'kx-');
-ylim([0 0.8]);
-set(gcf, 'unit', 'inch', 'pos', [4.5833    1.9375    4.0000    3.0000]);
-set(gca, 'fontsize', 8);
-ylabel('Coal Share');
-
-
-% ==============================
 gdx_filename = 'result_urban_exo.gdx';
 [urban, urban_id] = getgdx(gdx_filename, 'urban');
 SO2 = squeeze(urban(strcmp('SO2', urban_id{1}),:,:,:));

@@ -385,7 +385,6 @@ my_gridline;
 
 
 %% ==========
-clear
 yr = [2007, 2010:5:2030];
 figure(91); clf; hold on; box on;
 
@@ -476,7 +475,6 @@ for i = 1:length(urban_id{1})
     if i == 9, ylim([0 60]); end
 end
 
-
 % ==========
 gdx_filename = 'result_egyint_n.gdx';
 [urban, urban_id] = getgdx(gdx_filename, 'urban');
@@ -493,7 +491,7 @@ for i = 1:length(urban_id{1})
     
     export_filename = ['fig_', char(urban_id{1}(i))];
     my_gridline;
-    export_fig(export_filename);
+%     export_fig(export_filename);
 end
 
 
